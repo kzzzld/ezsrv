@@ -88,7 +88,6 @@ in {
 
       services.postgresql = {
         enable = true;
-        package = lib.mkDefault pkgs.postgresql;
       };
 
       services.nginx = {
