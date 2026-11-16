@@ -36,6 +36,8 @@ Then, you can use ezsrv modules in your configuration file. See [Example Usage](
 
 ```nix
 {
+  # Add ACME mail if you're going to use SSL
+  security.acme.defaults.email = "kzzzl@kzzzl.xyz";
   services.ezsrv.git = {
     enable = true;
     domain = "git.kzzzl.xyz";
