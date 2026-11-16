@@ -47,7 +47,7 @@ in {
       services.vaultwarden = {
         enable = true;
         config = {
-          DOMAIN = cfg.domain;
+          DOMAIN = "${if cfg.enableSSL then "https" else "http"}://${cfg.domain}";
           SIGNUPS_ALLOWED = cfg.enableRegistrations;
           ROCKET_ADDRESS = "127.0.0.1";
           ROCKET_PORT = cfg.port;
