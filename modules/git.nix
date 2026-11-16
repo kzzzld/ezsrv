@@ -1,4 +1,3 @@
-
 {
   config,
   pkgs,
@@ -50,7 +49,7 @@ in {
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       # allow port 80 for nginx
-      networking.firewall.allowedTCPPorts = [ 80 ];
+      networking.firewall.allowedTCPPorts = [80];
 
       services.forgejo = {
         enable = lib.mkDefault true;
@@ -59,7 +58,11 @@ in {
             SSH_PORT = lib.mkDefault cfg.sshPort;
             HTTP_PORT = lib.mkDefault cfg.httpPort;
             HTTP_ADDR = lib.mkDefault "127.0.0.1";
-            ROOT_URL = lib.mkDefault "${if cfg.enableSSL then "https" else "http"}://${cfg.domain}/";
+            ROOT_URL = lib.mkDefault "${
+              if cfg.enableSSL
+              then "https"
+              else "http"
+            }://${cfg.domain}/";
           };
 
           service.DISABLE_REGISTRATION = lib.mkDefault cfg.disableRegistration;
@@ -78,7 +81,7 @@ in {
     }
 
     (lib.mkIf cfg.enableSSL {
-      networking.firewall.allowedTCPPorts = [ 443 ];
+      networking.firewall.allowedTCPPorts = [443];
       security.acme.acceptTerms = true;
       services.nginx = {
         virtualHosts.${cfg.domain} = {
@@ -89,4 +92,3 @@ in {
     })
   ]);
 }
-

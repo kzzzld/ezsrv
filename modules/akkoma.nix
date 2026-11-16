@@ -22,7 +22,6 @@ in {
       description = "Name for Akkoma";
     };
 
-
     description = lib.mkOption {
       type = lib.types.str;
       example = "my akkoma server";
@@ -55,51 +54,49 @@ in {
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       # allow port 80
-      networking.firewall.allowedTCPPorts = [ 80 ];
+      networking.firewall.allowedTCPPorts = [80];
 
       services.akkoma = {
-    enable = true;
+        enable = true;
 
-    config = {
-      ":pleroma" = {
-        ":instance" = {
-          name = cfg.name;
-          description = cfg.description;
-          email = cfg.email;
-          registrations_open = cfg.enableRegistrations;
-        };
+        config = {
+          ":pleroma" = {
+            ":instance" = {
+              name = cfg.name;
+              description = cfg.description;
+              email = cfg.email;
+              registrations_open = cfg.enableRegistrations;
+            };
 
-        ":frontend_configurations" = {
-          pleroma_fe = {
-            background = "/images/back.png";
+            ":frontend_configurations" = {
+              pleroma_fe = {
+                background = "/images/back.png";
+              };
+            };
+
+            "Pleroma.Web.Endpoint" = {
+              url.host = cfg.domain;
+            };
           };
         };
-
-        "Pleroma.Web.Endpoint" = {
-          url.host = cfg.domain;
-        };
       };
-    };
 
-  };
-
-  services.nginx = {
-    clientMaxBodySize = "16m";
-    recommendedOptimisation = true;
-    recommendedGzipSettings = true;
-  };
-
+      services.nginx = {
+        clientMaxBodySize = "16m";
+        recommendedOptimisation = true;
+        recommendedGzipSettings = true;
+      };
     }
 
     (lib.mkIf cfg.enableSSL {
-      networking.firewall.allowedTCPPorts = [ 443 ];
+      networking.firewall.allowedTCPPorts = [443];
       services.akkoma.nginx = {
         enableACME = true;
         forceSSL = true;
       };
       security.acme.acceptTerms = true;
       services.nginx = {
-      recommendedTlsSettings = true;
+        recommendedTlsSettings = true;
         virtualHosts.${cfg.domain} = {
           forceSSL = true;
           enableACME = true;
@@ -108,4 +105,3 @@ in {
     })
   ]);
 }
-
