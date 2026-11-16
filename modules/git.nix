@@ -6,8 +6,6 @@
   ...
 }: let
   cfg = config.services.ezsrv.git;
-
-  domain = cfg.domain;
 in {
   # Let's define settings here
   options.services.ezsrv.git = {
@@ -61,7 +59,7 @@ in {
             SSH_PORT = lib.mkDefault cfg.sshPort;
             HTTP_PORT = lib.mkDefault cfg.httpPort;
             HTTP_ADDR = lib.mkDefault "127.0.0.1";
-            ROOT_URL = lib.mkDefault "${if cfg.enableSSL then "https" else "http"}://${domain}/";
+            ROOT_URL = lib.mkDefault "${if cfg.enableSSL then "https" else "http"}://${cfg.domain}/";
           };
 
           service.DISABLE_REGISTRATION = lib.mkDefault cfg.disableRegistration;
@@ -70,7 +68,7 @@ in {
 
       services.nginx = {
         enable = lib.mkDefault true;
-        virtualHosts.${domain} = {
+        virtualHosts.${cfg.domain} = {
           extraConfig = ''
             client_max_body_size 512M;
           '';
@@ -83,7 +81,7 @@ in {
       networking.firewall.allowedTCPPorts = [ 443 ];
       security.acme.acceptTerms = true;
       services.nginx = {
-        virtualHosts.${domain} = {
+        virtualHosts.${cfg.domain} = {
           forceSSL = true;
           enableACME = true;
         };
