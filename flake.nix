@@ -11,6 +11,7 @@
     ...
   }: {
     nixosModules = {
+      xmpp = import ./modules/xmpp.nix;
     };
   };
 }
