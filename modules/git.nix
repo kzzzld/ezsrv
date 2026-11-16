@@ -65,7 +65,7 @@ in {
             }://${cfg.domain}/";
           };
 
-          service.DISABLE_REGISTRATION = lib.mkDefault !cfg.enableRegistrations;
+          service.DISABLE_REGISTRATION = lib.mkDefault (!cfg.enableRegistrations);
         };
       };
 
