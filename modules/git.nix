@@ -52,37 +52,37 @@ in {
       networking.firewall.allowedTCPPorts = [80];
 
       services.forgejo = {
-        enable = lib.mkDefault true;
+        enable = true;
         settings = {
           server = {
-            SSH_PORT = lib.mkDefault cfg.sshPort;
-            HTTP_PORT = lib.mkDefault cfg.httpPort;
+            SSH_PORT = cfg.sshPort;
+            HTTP_PORT = cfg.httpPort;
             HTTP_ADDR = lib.mkDefault "127.0.0.1";
-            ROOT_URL = lib.mkDefault "${
+            ROOT_URL = "${
               if cfg.enableSSL
               then "https"
               else "http"
             }://${cfg.domain}/";
           };
 
-          service.DISABLE_REGISTRATION = lib.mkDefault (!cfg.enableRegistrations);
+          service.DISABLE_REGISTRATION = !cfg.enableRegistrations;
         };
       };
 
       services.nginx = {
         enable = lib.mkDefault true;
         virtualHosts.${cfg.domain} = {
-          extraConfig = ''
+          extraConfig = lib.mkDefault ''
             client_max_body_size 512M;
           '';
-          locations."/".proxyPass = "http://127.0.0.1:${toString config.services.forgejo.settings.server.HTTP_PORT}";
+          locations."/".proxyPass = lib.mkDefault "http://127.0.0.1:${toString config.services.forgejo.settings.server.HTTP_PORT}";
         };
       };
     }
 
     (lib.mkIf cfg.enableSSL {
       networking.firewall.allowedTCPPorts = [443];
-      security.acme.acceptTerms = true;
+      security.acme.acceptTerms = lib.mkDefault true;
       services.nginx = {
         virtualHosts.${cfg.domain} = {
           forceSSL = true;

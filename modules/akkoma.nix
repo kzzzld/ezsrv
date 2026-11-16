@@ -71,7 +71,7 @@ in {
 
             ":frontend_configurations" = {
               pleroma_fe = {
-                background = "/images/back.png";
+                background = lib.mkDefault "/images/back.png";
               };
             };
 
@@ -91,21 +91,21 @@ in {
       };
 
       services.postgresql = {
-        enable = true;
+        enable = lib.mkDefault true;
       };
 
       services.nginx = {
-        clientMaxBodySize = "16m";
-        recommendedOptimisation = true;
-        recommendedGzipSettings = true;
+        clientMaxBodySize = lib.mkDefault "16m";
+        recommendedOptimisation = lib.mkDefault true;
+        recommendedGzipSettings = lib.mkDefault true;
         virtualHosts.${cfg.domain} = {
           forceSSL = cfg.enableSSL;
           enableACME = cfg.enableSSL;
 
           locations."/" = {
-            proxyPass = "http://unix:/run/akkoma/socket:";
-            proxyWebsockets = true;
-            recommendedProxySettings = true;
+            proxyPass = lib.mkDefault "http://unix:/run/akkoma/socket:";
+            proxyWebsockets = lib.mkDefault true;
+            recommendedProxySettings = lib.mkDefault true;
           };
         };
       };
@@ -113,9 +113,9 @@ in {
 
     (lib.mkIf cfg.enableSSL {
       networking.firewall.allowedTCPPorts = [443];
-      security.acme.acceptTerms = true;
+      security.acme.acceptTerms = lib.mkDefault true;
       services.nginx = {
-        recommendedTlsSettings = true;
+        recommendedTlsSettings = lib.mkDefault true;
         virtualHosts.${cfg.domain} = {
           forceSSL = true;
           enableACME = true;

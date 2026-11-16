@@ -30,7 +30,7 @@ in {
       type = lib.types.bool;
       example = true;
       default = false;
-      description = "Enable registration";
+      description = "Enable registrations";
     };
 
     enableSSL = lib.mkOption {
@@ -49,7 +49,7 @@ in {
         admins = [cfg.adminUser];
 
         httpFileShare = {
-          domain = lib.mkDefault uploadDomain;
+          domain = uploadDomain;
           uploadFileSizeLimit = lib.mkDefault (100 * 1024 * 1024);
         };
 
@@ -80,7 +80,7 @@ in {
           http_files = true;
         };
 
-        allowRegistration = lib.mkDefault cfg.enableRegistrations;
+        allowRegistration = cfg.enableRegistrations;
       };
 
       networking.firewall.allowedTCPPorts = [80 443 5281 5222 5269];
@@ -95,7 +95,7 @@ in {
           serverAliases = [mucDomain uploadDomain];
 
           locations."/.well-known/acme-challenge/" = {
-            root = "/var/lib/acme/acme-challenge";
+            root = lib.mkDefault "/var/lib/acme/acme-challenge";
           };
         };
       };
@@ -103,9 +103,9 @@ in {
       users.groups.certs.members = ["prosody" "nginx"];
 
       security.acme.certs.${domain} = {
-        group = "certs";
-        webroot = "/var/lib/acme/acme-challenge";
-        postRun = "systemctl reload prosody.service";
+        group = lib.mkDefault "certs";
+        webroot = lib.mkDefault "/var/lib/acme/acme-challenge";
+        postRun = lib.mkDefault "systemctl reload prosody.service";
         extraDomainNames = [mucDomain uploadDomain];
       };
 

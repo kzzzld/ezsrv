@@ -20,7 +20,7 @@ in {
       type = lib.types.bool;
       example = true;
       default = false;
-      description = "Enable registration";
+      description = "Enable registrations";
     };
 
     port = lib.mkOption {
@@ -49,7 +49,7 @@ in {
         config = {
           DOMAIN = "${if cfg.enableSSL then "https" else "http"}://${cfg.domain}";
           SIGNUPS_ALLOWED = cfg.enableRegistrations;
-          ROCKET_ADDRESS = "127.0.0.1";
+          ROCKET_ADDRESS = lib.mkDefault "127.0.0.1";
           ROCKET_PORT = cfg.port;
         };
       };
@@ -57,14 +57,14 @@ in {
       services.nginx = {
         enable = lib.mkDefault true;
         virtualHosts.${cfg.domain} = {
-          locations."/".proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
+          locations."/".proxyPass = lib.mkDefault "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
         };
       };
     }
 
     (lib.mkIf cfg.enableSSL {
       networking.firewall.allowedTCPPorts = [443];
-      security.acme.acceptTerms = true;
+      security.acme.acceptTerms = lib.mkDefault true;
       services.nginx = {
         virtualHosts.${cfg.domain} = {
           forceSSL = true;
