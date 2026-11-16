@@ -94,15 +94,21 @@ in {
         clientMaxBodySize = "16m";
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
+        virtualHosts.${cfg.domain} = {
+          forceSSL = cfg.enableSSL;
+          enableACME = cfg.enableSSL;
+
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:4000";
+            proxyWebsockets = true;
+            recommendedProxySettings = true;
+          };
+        };
       };
     }
 
     (lib.mkIf cfg.enableSSL {
       networking.firewall.allowedTCPPorts = [443];
-      services.akkoma.nginx = {
-        enableACME = true;
-        forceSSL = true;
-      };
       security.acme.acceptTerms = true;
       services.nginx = {
         recommendedTlsSettings = true;
