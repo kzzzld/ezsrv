@@ -75,6 +75,10 @@ in {
               };
             };
 
+            "Pleroma.Upload" = {
+              base_url = "${if cfg.enableSSL then "https" else "http"}://${cfg.domain}/media";
+            };
+
             "Pleroma.Web.Endpoint" = {
               url.host = cfg.domain;
             };
