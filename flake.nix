@@ -14,12 +14,14 @@
       xmpp = import ./modules/xmpp.nix;
       git = import ./modules/git.nix;
       akkoma = import ./modules/akkoma.nix;
+      vaultwarden = import ./modules/vaultwarden.nix;
 
       default = {
         imports = [
           self.nixosModules.xmpp
           self.nixosModules.git
           self.nixosModules.akkoma
+          self.nixosModules.vaultwarden
         ];
       };
     };

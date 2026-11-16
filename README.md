@@ -57,3 +57,4 @@ Then, you can use ezsrv modules in your configuration file. See [Example Usage](
 - [XMPP (Prosody)](./modules/xmpp.nix)
 - [Git (Forgejo)](./modules/git.nix)
 - [Akkoma](./modules/akkoma.nix)
+- [Vaultwarden](./modules/vaultwarden.nix)
