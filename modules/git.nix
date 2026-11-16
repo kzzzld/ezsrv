@@ -51,8 +51,8 @@ in {
   # Forgejo configuration
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
-      # allow port 80 for nginx
-      networking.firewall.allowedTCPPorts = [ 80 ];
+      # allow port 80 and 443 for nginx
+      networking.firewall.allowedTCPPorts = [ 80 443 ];
 
       services.forgejo = {
         enable = lib.mkDefault true;
