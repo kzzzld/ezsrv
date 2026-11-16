@@ -81,6 +81,8 @@ in {
         };
       };
 
+      services.postgresql.package = lib.mkDefault pkgs.postgresql;
+
       services.nginx = {
         clientMaxBodySize = "16m";
         recommendedOptimisation = true;
