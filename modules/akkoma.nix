@@ -75,6 +75,10 @@ in {
               };
             };
 
+            ":http_security" = {
+              enabled = cfg.enableSSL;
+            };
+
             "Pleroma.Upload" = {
               base_url = "${if cfg.enableSSL then "https" else "http"}://${cfg.domain}/media";
             };
@@ -99,7 +103,7 @@ in {
           enableACME = cfg.enableSSL;
 
           locations."/" = {
-            proxyPass = "http://127.0.0.1:4000";
+            proxyPass = "http://unix:/run/akkoma/socket:";
             proxyWebsockets = true;
             recommendedProxySettings = true;
           };
