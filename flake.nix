@@ -13,6 +13,13 @@
     nixosModules = {
       xmpp = import ./modules/xmpp.nix;
       git = import ./modules/git.nix;
+
+      default = {
+        imports = [
+          self.nixosModules.xmpp
+          self.nixosModules.git
+        ];
+      };
     };
   };
 }
