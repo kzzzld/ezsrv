@@ -16,7 +16,7 @@ in {
       description = "Domain name of Vaultwarden server";
     };
 
-    enableRegistration = lib.mkOption {
+    enableRegistrations = lib.mkOption {
       type = lib.types.bool;
       example = true;
       default = false;
@@ -48,7 +48,7 @@ in {
         enable = true;
         config = {
           DOMAIN = cfg.domain;
-          SIGNUPS_ALLOWED = cfg.enableRegistration;
+          SIGNUPS_ALLOWED = cfg.allowRegistrations;
           ROCKET_ADDRESS = "127.0.0.1";
           ROCKET_PORT = cfg.port;
         };

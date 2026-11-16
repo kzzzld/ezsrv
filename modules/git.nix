@@ -16,11 +16,11 @@ in {
       description = "Domain name of Git server";
     };
 
-    disableRegistration = lib.mkOption {
+    enableRegistrations = lib.mkOption {
       type = lib.types.bool;
       example = true;
-      default = true;
-      description = "Disable registration";
+      default = false;
+      description = "Enable registrations";
     };
 
     sshPort = lib.mkOption {
@@ -65,7 +65,7 @@ in {
             }://${cfg.domain}/";
           };
 
-          service.DISABLE_REGISTRATION = lib.mkDefault cfg.disableRegistration;
+          service.DISABLE_REGISTRATION = lib.mkDefault !cfg.enableRegistrations;
         };
       };
 

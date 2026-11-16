@@ -26,7 +26,7 @@ in {
       description = "Administrator XMPP address";
     };
 
-    allowRegistration = lib.mkOption {
+    allowRegistrations = lib.mkOption {
       type = lib.types.bool;
       example = true;
       default = false;
@@ -80,7 +80,7 @@ in {
           http_files = true;
         };
 
-        allowRegistration = lib.mkDefault cfg.allowRegistration;
+        allowRegistration = lib.mkDefault cfg.allowRegistrations;
       };
 
       networking.firewall.allowedTCPPorts = [80 443 5281 5222 5269];
