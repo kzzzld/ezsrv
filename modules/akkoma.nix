@@ -86,7 +86,10 @@ in {
         };
       };
 
-      services.postgresql.package = lib.mkDefault pkgs.postgresql;
+      services.postgresql = {
+        enable = true;
+        package = lib.mkDefault pkgs.postgresql;
+      };
 
       services.nginx = {
         clientMaxBodySize = "16m";
