@@ -80,6 +80,7 @@ in {
     }
 
     (lib.mkIf cfg.enableSSL {
+      security.acme.acceptTerms = true;
       services.nginx = {
         virtualHosts.${domain} = {
           forceSSL = true;
